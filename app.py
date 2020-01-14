@@ -40,25 +40,23 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    print(event.message.text)
     if event.message.text == '最新展覽':
-        datas = get_datas()
-        columns= []
+        datas = get_datas() # 呼叫csrf_scraw裡的get_datas
+        columns= [] # 準備一個空的columns陣列
         for i, d in enumerate(datas):
-            print(d['title'])
-            column = CarouselColumn(
+            column = CarouselColumn( # column裡面的內容
                 thumbnail_image_url = d['img'],
                 title = d['title'],
                 text = d['text'],
-                actions = [
-                    URITemplateAction(
+                actions = [ 
+                    URITemplateAction( #鏈接
                         label = '展覽介紹連結',
                         uri = d['url']
                     )
                 ]
             )
-            columns.append(column)
-
+            columns.append(column) 
+        
         carousel_template_message = TemplateSendMessage(
             alt_text = "展覽輪播",
             template = CarouselTemplate(
